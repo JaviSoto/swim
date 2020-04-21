@@ -20,7 +20,7 @@ public enum WriteFormat {
 @inlinable
 func write<P: AlphaImageFileFormat>(image: Image<P, UInt8>, url: URL) throws {
     guard url.isFileURL else {
-        throw ImageWriteError.failedToWrite
+        throw ImageWriteError.urlIsNotFileURL
     }
     
     let path = url.path
@@ -34,14 +34,14 @@ func write<P: AlphaImageFileFormat>(image: Image<P, UInt8>, url: URL) throws {
     }
     
     guard code != 0 else {
-        throw ImageWriteError.failedToWrite
+        throw ImageWriteError.failedToWrite(errorCode: code)
     }
 }
 
 @inlinable
 func write<P: ImageFileFormat>(image: Image<P, UInt8>, url: URL, format: WriteFormat) throws {
     guard url.isFileURL else {
-        throw ImageWriteError.failedToWrite
+        throw ImageWriteError.urlIsNotFileURL
     }
     
     let path = url.path
@@ -70,7 +70,7 @@ func write<P: ImageFileFormat>(image: Image<P, UInt8>, url: URL, format: WriteFo
     }
     
     guard code != 0 else {
-        throw ImageWriteError.failedToWrite
+        throw ImageWriteError.failedToWrite(errorCode: code)
     }
 }
 
@@ -154,6 +154,7 @@ extension Image where P: ImageFileFormat, T: BinaryFloatingPoint {
 // MARK: - Error type
 
 public enum ImageWriteError: Error {
-    case failedToWrite
+    case urlIsNotFileURL
+    case failedToWrite(errorCode: Int32)
     case qualityOutOfRange
 }
