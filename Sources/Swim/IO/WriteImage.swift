@@ -33,7 +33,7 @@ func write<P: AlphaImageFileFormat>(image: Image<P, UInt8>, url: URL) throws {
         write_image_png(path, width, height, bpp, $0.baseAddress!)
     }
     
-    guard code != 0 else {
+    guard code == 0 else {
         throw ImageWriteError.failedToWrite(errorCode: code)
     }
 }
@@ -69,7 +69,7 @@ func write<P: ImageFileFormat>(image: Image<P, UInt8>, url: URL, format: WriteFo
         }
     }
     
-    guard code != 0 else {
+    guard code == 0 else {
         throw ImageWriteError.failedToWrite(errorCode: code)
     }
 }
